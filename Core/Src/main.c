@@ -22,8 +22,8 @@
 #include "cmsis_os.h"
 #include "adc.h"
 #include "dma.h"
-#include "eth.h"
 #include "i2c.h"
+#include "lwip.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -99,7 +99,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_USART6_UART_Init();
-  MX_ETH_Init();
   MX_I2C1_Init();
   MX_I2C3_Init();
   MX_TIM1_Init();
