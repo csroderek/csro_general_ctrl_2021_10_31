@@ -1,0 +1,10 @@
+freertos.c:137:6:MX_FREERTOS_Init	8	static
+freertos.c:203:6:StartTask01	16	static
+freertos.c:221:6:StartTask02	16	static
+freertos.c:239:6:StartTask03	16	static
+freertos.c:257:6:StartTask04	16	static
+freertos.c:275:6:StartTask05	16	static
+freertos.c:293:6:StartTask06	16	static
+freertos.c:311:6:StartTask07	16	static
+freertos.c:329:6:StartTask08	16	static
+freertos.c:347:6:StartTask09	16	static
