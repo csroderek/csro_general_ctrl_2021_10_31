@@ -339,7 +339,6 @@ void StartTask07(void *argument)
 void StartTask08(void *argument)
 {
   /* USER CODE BEGIN StartTask08 */
-  fnd_input_adc_init();
   /* Infinite loop */
   for (;;)
   {
