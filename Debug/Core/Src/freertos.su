@@ -7,4 +7,4 @@ freertos.c:285:6:StartTask05	16	static
 freertos.c:303:6:StartTask06	16	static
 freertos.c:321:6:StartTask07	16	static
 freertos.c:339:6:StartTask08	16	static
-freertos.c:365:6:StartTask09	16	static
+freertos.c:364:6:StartTask09	16	static
