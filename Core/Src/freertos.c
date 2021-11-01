@@ -27,6 +27,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "gpio.h"
+#include "fnd_input.h"
+#include "fnd_output.h"
 
 /* USER CODE END Includes */
 
@@ -47,6 +49,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+uint8_t di_value[4];
+uint8_t id_value[8];
+uint8_t do_value[6];
+float adc_value[10];
 
 /* USER CODE END Variables */
 /* Definitions for myTask01 */
@@ -333,10 +339,18 @@ void StartTask07(void *argument)
 void StartTask08(void *argument)
 {
   /* USER CODE BEGIN StartTask08 */
+  fnd_input_adc_init();
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    osDelay(100);
+    fnd_input_gpio_read_di(di_value);
+    fnd_input_gpio_read_id(id_value);
+    fnd_output_gpio_write_do(do_value);
+
+    fnd_input_adc_read_dp(&adc_value[0]);
+    fnd_input_adc_read_ntc(&adc_value[3]);
+    fnd_input_adc_read_val_fb(&adc_value[9]);
   }
   /* USER CODE END StartTask08 */
 }

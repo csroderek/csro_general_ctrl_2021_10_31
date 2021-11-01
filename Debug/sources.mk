@@ -22,6 +22,8 @@ OBJCOPY_BIN :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
+Csro/fnd_input \
+Csro/fnd_output \
 Drivers/STM32F4xx_HAL_Driver/Src \
 LWIP/App \
 LWIP/Target \
