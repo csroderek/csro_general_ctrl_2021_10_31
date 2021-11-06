@@ -100,27 +100,39 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin PBPin */
-  GPIO_InitStruct.Pin = STEP_B5_Pin|ETH_RSTN_Pin|STEP_A5_Pin|RS485_EN3_Pin
-                          |RLY_01_Pin|RLY_02_Pin;
+                           PBPin */
+  GPIO_InitStruct.Pin = STEP_B5_Pin|ETH_RSTN_Pin|STEP_A5_Pin|RLY_01_Pin
+                          |RLY_02_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PDPin PDPin PDPin PDPin
-                           PDPin PDPin */
-  GPIO_InitStruct.Pin = STEP_A4_Pin|STEP_A3_Pin|STEP_A2_Pin|STEP_A1_Pin
-                          |RS485_EN4_Pin|RS485_EN2_Pin;
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = RS485_EN3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RS485_EN3_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PDPin PDPin PDPin PDPin */
+  GPIO_InitStruct.Pin = STEP_A4_Pin|STEP_A3_Pin|STEP_A2_Pin|STEP_A1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PDPin PDPin */
+  GPIO_InitStruct.Pin = RS485_EN4_Pin|RS485_EN2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = RS485_EN1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RS485_EN1_GPIO_Port, &GPIO_InitStruct);
 

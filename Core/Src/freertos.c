@@ -29,6 +29,8 @@
 #include "gpio.h"
 #include "fnd_input.h"
 #include "fnd_output.h"
+#include "fnd_com.h"
+#include "fnd_eeprom.h"
 
 /* USER CODE END Includes */
 
@@ -56,70 +58,73 @@ float adc_value[10];
 float sht_value[4];
 uint16_t speed_value[2];
 uint16_t step_value[4];
+uint16_t pwm_value[3];
+
+uint16_t eeprom_test_value = 0;
 
 /* USER CODE END Variables */
 /* Definitions for myTask01 */
 osThreadId_t myTask01Handle;
 const osThreadAttr_t myTask01_attributes = {
-    .name = "myTask01",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityHigh7,
+  .name = "myTask01",
+  .stack_size = 2048 * 4,
+  .priority = (osPriority_t) osPriorityHigh7,
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
-    .name = "myTask02",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityHigh5,
+  .name = "myTask02",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityHigh5,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
-    .name = "myTask03",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityHigh3,
+  .name = "myTask03",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityHigh3,
 };
 /* Definitions for myTask04 */
 osThreadId_t myTask04Handle;
 const osThreadAttr_t myTask04_attributes = {
-    .name = "myTask04",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityHigh1,
+  .name = "myTask04",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityHigh1,
 };
 /* Definitions for myTask05 */
 osThreadId_t myTask05Handle;
 const osThreadAttr_t myTask05_attributes = {
-    .name = "myTask05",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityAboveNormal7,
+  .name = "myTask05",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal7,
 };
 /* Definitions for myTask06 */
 osThreadId_t myTask06Handle;
 const osThreadAttr_t myTask06_attributes = {
-    .name = "myTask06",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityAboveNormal5,
+  .name = "myTask06",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal5,
 };
 /* Definitions for myTask07 */
 osThreadId_t myTask07Handle;
 const osThreadAttr_t myTask07_attributes = {
-    .name = "myTask07",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityAboveNormal3,
+  .name = "myTask07",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal3,
 };
 /* Definitions for myTask08 */
 osThreadId_t myTask08Handle;
 const osThreadAttr_t myTask08_attributes = {
-    .name = "myTask08",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityAboveNormal1,
+  .name = "myTask08",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal1,
 };
 /* Definitions for myTask09 */
 osThreadId_t myTask09Handle;
 const osThreadAttr_t myTask09_attributes = {
-    .name = "myTask09",
-    .stack_size = 128 * 4,
-    .priority = (osPriority_t)osPriorityLow,
+  .name = "myTask09",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -141,14 +146,13 @@ extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
-void MX_FREERTOS_Init(void)
-{
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+  fnd_com_modbus_rtu_init();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -202,6 +206,7 @@ void MX_FREERTOS_Init(void)
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
+
 }
 
 /* USER CODE BEGIN Header_StartTask01 */
@@ -219,7 +224,7 @@ void StartTask01(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END StartTask01 */
 }
@@ -237,7 +242,7 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    fnd_com_modbus_rtu_slave1_wait();
   }
   /* USER CODE END StartTask02 */
 }
@@ -255,7 +260,7 @@ void StartTask03(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    fnd_com_modbus_rtu_slave2_wait();
   }
   /* USER CODE END StartTask03 */
 }
@@ -273,7 +278,7 @@ void StartTask04(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    fnd_com_modbus_rtu_slave3_wait();
   }
   /* USER CODE END StartTask04 */
 }
@@ -291,7 +296,7 @@ void StartTask05(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    fnd_com_modbus_rtu_slave4_wait();
   }
   /* USER CODE END StartTask05 */
 }
@@ -343,11 +348,11 @@ void StartTask07(void *argument)
 void StartTask08(void *argument)
 {
   /* USER CODE BEGIN StartTask08 */
+
   /* Infinite loop */
   for (;;)
   {
     osDelay(100);
-
     fnd_input_gpio_read_di(di_value);
     fnd_input_gpio_read_id(id_value);
 
@@ -360,6 +365,7 @@ void StartTask08(void *argument)
     fnd_input_tim_input_read_speed(speed_value);
 
     fnd_output_gpio_write_do(do_value);
+    fnd_output_pwm_write_value(pwm_value);
     fnd_output_stepper_set_position(step_value);
   }
   /* USER CODE END StartTask08 */

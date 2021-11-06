@@ -14,6 +14,9 @@ void fnd_input_adc_read_ntc(float *values);
 void fnd_input_adc_read_val_fb(float *values);
 
 // fnd_input_i2c.c
-void fnd_input_i2c_read_sht(float *values)
+void fnd_input_i2c_read_sht(float *values);
+
+// fnd_input_tim.c
+void fnd_input_tim_input_read_speed(uint16_t *values);
 
 #endif

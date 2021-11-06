@@ -39,7 +39,7 @@
 #define TIME_WAITING_FOR_INPUT ( portMAX_DELAY )
 /* USER CODE BEGIN OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Stack size of the interface thread */
-#define INTERFACE_THREAD_STACK_SIZE ( 350 )
+#define INTERFACE_THREAD_STACK_SIZE (350)
 /* USER CODE END OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Network interface name */
 #define IFNAME0 's'
@@ -135,7 +135,10 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     HAL_NVIC_SetPriority(ETH_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(ETH_IRQn);
   /* USER CODE BEGIN ETH_MspInit 1 */
-
+    HAL_GPIO_WritePin(ETH_RSTN_GPIO_Port, ETH_RSTN_Pin, GPIO_PIN_RESET);
+    HAL_Delay(50);
+    HAL_GPIO_WritePin(ETH_RSTN_GPIO_Port, ETH_RSTN_Pin, GPIO_PIN_SET);
+    HAL_Delay(50);
   /* USER CODE END ETH_MspInit 1 */
   }
 }
@@ -597,22 +600,22 @@ err_t ethernetif_init(struct netif *netif)
 /* USER CODE BEGIN 6 */
 
 /**
-* @brief  Returns the current time in milliseconds
-*         when LWIP_TIMERS == 1 and NO_SYS == 1
-* @param  None
-* @retval Time
-*/
+ * @brief  Returns the current time in milliseconds
+ *         when LWIP_TIMERS == 1 and NO_SYS == 1
+ * @param  None
+ * @retval Time
+ */
 u32_t sys_jiffies(void)
 {
   return HAL_GetTick();
 }
 
 /**
-* @brief  Returns the current time in milliseconds
-*         when LWIP_TIMERS == 1 and NO_SYS == 1
-* @param  None
-* @retval Time
-*/
+ * @brief  Returns the current time in milliseconds
+ *         when LWIP_TIMERS == 1 and NO_SYS == 1
+ * @param  None
+ * @retval Time
+ */
 u32_t sys_now(void)
 {
   return HAL_GetTick();
@@ -750,16 +753,15 @@ void ethernetif_update_config(struct netif *netif)
 
 /* USER CODE BEGIN 8 */
 /**
-  * @brief  This function notify user about link status changement.
-  * @param  netif: the network interface
-  * @retval None
-  */
+ * @brief  This function notify user about link status changement.
+ * @param  netif: the network interface
+ * @retval None
+ */
 __weak void ethernetif_notify_conn_changed(struct netif *netif)
 {
   /* NOTE : This is function could be implemented in user file
             when the callback is needed,
   */
-
 }
 /* USER CODE END 8 */
 #endif /* LWIP_NETIF_LINK_CALLBACK */

@@ -22,6 +22,8 @@ OBJCOPY_BIN :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
+Csro/fnd_com \
+Csro/fnd_eeprom \
 Csro/fnd_input \
 Csro/fnd_output \
 Drivers/STM32F4xx_HAL_Driver/Src \
@@ -39,4 +41,5 @@ Middlewares/Third_Party/LwIP/src/core/ipv6 \
 Middlewares/Third_Party/LwIP/src/netif \
 Middlewares/Third_Party/LwIP/src/netif/ppp \
 Middlewares/Third_Party/LwIP/system/OS \
+Modbus_RTU \
 

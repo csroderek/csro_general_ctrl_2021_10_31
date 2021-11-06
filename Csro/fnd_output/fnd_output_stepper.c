@@ -112,7 +112,7 @@ static void fnd_output_stepper_check_init(void)
             motor[i].target_pos = 0;
             motor[i].up_excite_cnt = 0;
         }
-        init_flag == 1;
+        init_flag = 1;
     }
 }
 
