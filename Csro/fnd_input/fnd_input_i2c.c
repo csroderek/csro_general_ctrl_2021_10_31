@@ -73,3 +73,19 @@ HAL_StatusTypeDef fnd_input_i2c_read_sht_temp_humi(uint8_t idx, float *values)
     }
     return HAL_ERROR;
 }
+
+void fnd_input_i2c_read_sht(float *values)
+{
+    float sht1_values[2] = {0};
+    float sht2_values[2] = {0};
+    HAL_StatusTypeDef status = fnd_input_i2c_read_sht_temp_humi(0, sht1_values);
+    for (uint8_t i = 0; i < 2; i++)
+    {
+        values[i] = (status == HAL_OK) ? (int16_t)(sht1_values[i] * 10) : (-1);
+    }
+    status = fnd_input_i2c_read_sht_temp_humi(1, sht2_values);
+    for (uint8_t i = 0; i < 2; i++)
+    {
+        values[2 + i] = (status == HAL_OK) ? (int16_t)(sht2_values[i] * 10) : (-1);
+    }
+}

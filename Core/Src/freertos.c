@@ -53,6 +53,9 @@ uint8_t di_value[4];
 uint8_t id_value[8];
 uint8_t do_value[6];
 float adc_value[10];
+float sht_value[4];
+uint16_t speed_value[2];
+uint16_t step_value[4];
 
 /* USER CODE END Variables */
 /* Definitions for myTask01 */
@@ -324,7 +327,8 @@ void StartTask07(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(1);
+    osDelay(10);
+    fnd_output_stepper_10ms_tick();
   }
   /* USER CODE END StartTask07 */
 }
@@ -343,13 +347,20 @@ void StartTask08(void *argument)
   for (;;)
   {
     osDelay(100);
+
     fnd_input_gpio_read_di(di_value);
     fnd_input_gpio_read_id(id_value);
-    fnd_output_gpio_write_do(do_value);
 
     fnd_input_adc_read_dp(&adc_value[0]);
     fnd_input_adc_read_ntc(&adc_value[3]);
     fnd_input_adc_read_val_fb(&adc_value[9]);
+
+    fnd_input_i2c_read_sht(sht_value);
+
+    fnd_input_tim_input_read_speed(speed_value);
+
+    fnd_output_gpio_write_do(do_value);
+    fnd_output_stepper_set_position(step_value);
   }
   /* USER CODE END StartTask08 */
 }
