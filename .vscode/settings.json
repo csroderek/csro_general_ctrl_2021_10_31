@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "fnd_output.h": "c"
+    "fnd_output.h": "c",
+    "cmath": "c"
   }
 }
