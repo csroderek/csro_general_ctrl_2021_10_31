@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "fnd_output.h": "c",
-    "cmath": "c"
+    "cmath": "c",
+    "main.h": "c"
   }
 }
