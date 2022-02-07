@@ -1,37 +1,33 @@
 /**
  ******************************************************************************
-  * File Name          : LWIP.c
-  * Description        : This file provides initialization code for LWIP
-  *                      middleWare.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
+ * File Name          : LWIP.c
+ * Description        : This file provides initialization code for LWIP
+ *                      middleWare.
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2022 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under Ultimate Liberty license
+ * SLA0044, the "License"; You may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at:
+ *                             www.st.com/SLA0044
+ *
+ ******************************************************************************
+ */
 
 /* Includes ------------------------------------------------------------------*/
 #include "lwip.h"
 #include "lwip/init.h"
 #include "lwip/netif.h"
-#if defined ( __CC_ARM )  /* MDK ARM Compiler */
+#if defined(__CC_ARM) /* MDK ARM Compiler */
 #include "lwip/sio.h"
 #endif /* MDK ARM Compiler */
 #include "ethernetif.h"
 #include <string.h>
 
 /* USER CODE BEGIN 0 */
-#define TCPECHO_THREAD_PRIO (tskIDLE_PRIORITY + 5)
-
-#include "lwip/sys.h"
-#include "lwip/api.h"
 
 /* USER CODE END 0 */
 /* Private function prototypes -----------------------------------------------*/
@@ -39,7 +35,9 @@
 void Error_Handler(void);
 
 /* USER CODE BEGIN 1 */
-uint32_t tcp_cnt = 0;
+#include "lwip/opt.h"
+#include "lwip/sys.h"
+#include "lwip/api.h"
 
 /* USER CODE END 1 */
 /* Semaphore to signal Ethernet Link state update */
@@ -58,87 +56,82 @@ osThreadAttr_t attributes;
 /* USER CODE END OS_THREAD_ATTR_CMSIS_RTOS_V2 */
 
 /* USER CODE BEGIN 2 */
-
-uint32_t data_log[20];
-
-static void tcpecho_thread(void *arg)
+static void tcp_thread_01(void *arg)
 {
   struct netconn *conn, *newconn;
-  err_t err, accept_err;
-  struct netbuf *buf;
-  void *data;
-  u16_t len;
-  err_t recv_err;
-
-  data_log[2]++;
+  err_t err;
   LWIP_UNUSED_ARG(arg);
-  data_log[3]++;
-  /* Create a new connection identifier. */
   conn = netconn_new(NETCONN_TCP);
-  data_log[4]++;
+  netconn_bind(conn, IP_ADDR_ANY, 5000);
+  LWIP_ERROR("tcpecho: invalid conn", (conn != NULL), return;);
+  netconn_listen(conn);
 
-  if (conn != NULL)
+  while (1)
   {
-    /* Bind connection to well known port number 7. */
-    err = netconn_bind(conn, NULL, 8000);
-    data_log[5]++;
-
+    err = netconn_accept(conn, &newconn);
     if (err == ERR_OK)
     {
-      /* Tell connection to go into listening mode. */
-      netconn_listen(conn);
-      data_log[6]++;
-      while (1)
+      struct netbuf *buf;
+      void *data;
+      u16_t len;
+      while ((err = netconn_recv(newconn, &buf)) == ERR_OK)
       {
-        /* Grab new connection. */
-        accept_err = netconn_accept(conn, &newconn);
-
-        /* Process the new connection. */
-        if (accept_err == ERR_OK)
+        do
         {
-          data_log[7]++;
-          recv_err = netconn_recv(newconn, &buf);
-          while (recv_err == ERR_OK)
-          {
-            data_log[8]++;
-            do
-            {
-              data_log[9]++;
-              netbuf_data(buf, &data, &len);
-              netconn_write(newconn, data, len, NETCONN_COPY);
-
-            } while (netbuf_next(buf) >= 0);
-
-            netbuf_delete(buf);
-            recv_err = netconn_recv(newconn, &buf);
-          }
-
-          /* Close connection and discard connection identifier. */
-          netconn_close(newconn);
-          netconn_delete(newconn);
-        }
-        data_log[10]++;
+          netbuf_data(buf, &data, &len);
+          err = netconn_write(newconn, data, len, NETCONN_COPY);
+        } while (netbuf_next(buf) >= 0);
+        netbuf_delete(buf);
       }
-    }
-    else
-    {
+      /* Close connection and discard connection identifier. */
+      netconn_close(newconn);
       netconn_delete(newconn);
-      data_log[11]++;
     }
   }
-  else
+}
+
+static void tcp_thread_02(void *arg)
+{
+  struct netconn *conn, *newconn;
+  err_t err;
+  LWIP_UNUSED_ARG(arg);
+  conn = netconn_new(NETCONN_TCP);
+  netconn_bind(conn, IP_ADDR_ANY, 5001);
+  LWIP_ERROR("tcpecho: invalid conn", (conn != NULL), return;);
+  netconn_listen(conn);
+
+  while (1)
   {
+    err = netconn_accept(conn, &newconn);
+    if (err == ERR_OK)
+    {
+      struct netbuf *buf;
+      void *data;
+      u16_t len;
+      while ((err = netconn_recv(newconn, &buf)) == ERR_OK)
+      {
+        do
+        {
+          netbuf_data(buf, &data, &len);
+          err = netconn_write(newconn, data, len, NETCONN_COPY);
+        } while (netbuf_next(buf) >= 0);
+        netbuf_delete(buf);
+      }
+      /* Close connection and discard connection identifier. */
+      netconn_close(newconn);
+      netconn_delete(newconn);
+    }
   }
 }
 /* USER CODE END 2 */
 
 /**
-  * LwIP initialization function
-  */
+ * LwIP initialization function
+ */
 void MX_LWIP_Init(void)
 {
   /* Initilialize the LwIP stack with RTOS */
-  tcpip_init( NULL, NULL );
+  tcpip_init(NULL, NULL);
 
   /* IP addresses initialization with DHCP (IPv4) */
   ipaddr.addr = 0;
@@ -171,22 +164,21 @@ void MX_LWIP_Init(void)
   link_arg.netif = &gnetif;
   link_arg.semaphore = Netif_LinkSemaphore;
   /* Create the Ethernet link handler thread */
-/* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
+  /* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
   memset(&attributes, 0x0, sizeof(osThreadAttr_t));
   attributes.name = "LinkThr";
   attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
   attributes.priority = osPriorityBelowNormal;
   osThreadNew(ethernetif_set_link, &link_arg, &attributes);
-/* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
+  /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
   /* Start DHCP negotiation for a network interface (IPv4) */
   dhcp_start(&gnetif);
 
-/* USER CODE BEGIN 3 */
-  data_log[0]++;
-  sys_thread_new("tcpecho_thread", tcpecho_thread, NULL, 1024, osPriorityAboveNormal5);
-  data_log[1]++;
-/* USER CODE END 3 */
+  /* USER CODE BEGIN 3 */
+  sys_thread_new("tcp_thread_01", tcp_thread_01, NULL, 512, 4);
+  sys_thread_new("tcp_thread_02", tcp_thread_02, NULL, 512, 4);
+  /* USER CODE END 3 */
 }
 
 #ifdef USE_OBSOLETE_USER_CODE_SECTION_4
@@ -196,7 +188,7 @@ void MX_LWIP_Init(void)
 /* USER CODE END 4 */
 #endif
 
-#if defined ( __CC_ARM )  /* MDK ARM Compiler */
+#if defined(__CC_ARM) /* MDK ARM Compiler */
 /**
  * Opens a serial device for communication.
  *
@@ -207,9 +199,9 @@ sio_fd_t sio_open(u8_t devnum)
 {
   sio_fd_t sd;
 
-/* USER CODE BEGIN 7 */
+  /* USER CODE BEGIN 7 */
   sd = 0; // dummy code
-/* USER CODE END 7 */
+          /* USER CODE END 7 */
 
   return sd;
 }
@@ -224,8 +216,8 @@ sio_fd_t sio_open(u8_t devnum)
  */
 void sio_send(u8_t c, sio_fd_t fd)
 {
-/* USER CODE BEGIN 8 */
-/* USER CODE END 8 */
+  /* USER CODE BEGIN 8 */
+  /* USER CODE END 8 */
 }
 
 /**
@@ -243,9 +235,9 @@ u32_t sio_read(sio_fd_t fd, u8_t *data, u32_t len)
 {
   u32_t recved_bytes;
 
-/* USER CODE BEGIN 9 */
+  /* USER CODE BEGIN 9 */
   recved_bytes = 0; // dummy code
-/* USER CODE END 9 */
+                    /* USER CODE END 9 */
   return recved_bytes;
 }
 
@@ -262,9 +254,9 @@ u32_t sio_tryread(sio_fd_t fd, u8_t *data, u32_t len)
 {
   u32_t recved_bytes;
 
-/* USER CODE BEGIN 10 */
+  /* USER CODE BEGIN 10 */
   recved_bytes = 0; // dummy code
-/* USER CODE END 10 */
+                    /* USER CODE END 10 */
   return recved_bytes;
 }
 #endif /* MDK ARM Compiler */
