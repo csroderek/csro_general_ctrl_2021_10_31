@@ -29,13 +29,18 @@ typedef struct
 
 } stepper_motor;
 
+void fnd_output_init(void);
+void fnd_output_update(void);
+
 // fnd_output_gpio.c
 void fnd_output_gpio_write_do(uint8_t *values);
 
 // fnd_output_pwm.c
+void fnd_output_pwm_init(void);
 void fnd_output_pwm_write_value(uint16_t *values);
 
 // fnd_output_stepper.c
+void fnd_output_stepper_init(void);
 void fnd_output_stepper_set_position(uint16_t *values);
 void fnd_output_stepper_10ms_tick(void);
 

@@ -92,27 +92,21 @@ static void fnd_output_stepper_tick(stepper_motor *motor)
     }
 }
 
-static void fnd_output_stepper_check_init(void)
+void fnd_output_stepper_init(void)
 {
-    static uint8_t init_flag = 0;
-
-    if (init_flag == 0)
+    for (uint8_t i = 0; i < 4; i++)
     {
-        for (uint8_t i = 0; i < 4; i++)
+        for (uint8_t j = 0; j < 4; j++)
         {
-            for (uint8_t j = 0; j < 4; j++)
-            {
-                motor[i].gpio_port[j] = stepper_port[i * 4 + j];
-                motor[i].gpio_pin[j] = stepper_pin[i * 4 + j];
-            }
-            motor[i].current_pos = 1200;
-            motor[i].down_excite_cnt = 0;
-            motor[i].mode = STOP;
-            motor[i].phase = 0;
-            motor[i].target_pos = 0;
-            motor[i].up_excite_cnt = 0;
+            motor[i].gpio_port[j] = stepper_port[i * 4 + j];
+            motor[i].gpio_pin[j] = stepper_pin[i * 4 + j];
         }
-        init_flag = 1;
+        motor[i].current_pos = 1200;
+        motor[i].down_excite_cnt = 0;
+        motor[i].mode = STOP;
+        motor[i].phase = 0;
+        motor[i].target_pos = 0;
+        motor[i].up_excite_cnt = 0;
     }
 }
 
@@ -126,7 +120,6 @@ void fnd_output_stepper_set_position(uint16_t *values)
 
 void fnd_output_stepper_10ms_tick(void)
 {
-    fnd_output_stepper_check_init();
     fnd_output_stepper_tick(&motor[0]);
     fnd_output_stepper_tick(&motor[1]);
     fnd_output_stepper_tick(&motor[2]);

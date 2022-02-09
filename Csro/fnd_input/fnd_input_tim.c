@@ -1,17 +1,12 @@
 #include "fnd_input.h"
 #include "tim.h"
 
-uint32_t spd_pulse[2];
+uint16_t spd_pulse[2];
 
-static void fnd_input_tim_input_capture_init_check(void)
+void fnd_input_tim_input_capture_init(void)
 {
-    static uint8_t init_flag = 0;
-    if (init_flag == 0)
-    {
-        HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
-        HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_2);
-        init_flag = 1;
-    }
+    HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);
+    HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_2);
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
@@ -26,12 +21,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
     }
 }
 
-void fnd_input_tim_input_read_speed(uint16_t *values)
+void fnd_input_tim_input_read_pulses(uint16_t *values)
 {
-    fnd_input_tim_input_capture_init_check();
-    for (uint8_t i = 0; i < 2; i++)
-    {
-        values[i] = spd_pulse[i];
-        spd_pulse[i] = 0;
-    }
+    values[0] = spd_pulse[0];
+    values[1] = spd_pulse[1];
 }
