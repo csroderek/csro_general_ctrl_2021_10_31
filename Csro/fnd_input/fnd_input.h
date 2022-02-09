@@ -17,6 +17,7 @@ void fnd_input_adc_read_values(float *values);
 
 // fnd_input_i2c.c
 HAL_StatusTypeDef fnd_input_i2c_read_sht_temp_humi(uint8_t idx, float *values);
+void fnd_input_i2c_read_sht(void);
 
 // fnd_input_tim.c
 void fnd_input_tim_input_capture_init(void);

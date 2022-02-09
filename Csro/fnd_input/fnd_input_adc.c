@@ -1,6 +1,5 @@
 #include "fnd_input.h"
 #include "adc.h"
-#include "math.h"
 
 #define ADC_TOTAL_CH 13
 #define DATA_PER_CH 10

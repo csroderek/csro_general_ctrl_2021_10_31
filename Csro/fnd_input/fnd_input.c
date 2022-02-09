@@ -1,5 +1,6 @@
 #include "fnd_input.h"
 #include "fnd_com.h"
+#include "math.h"
 
 #define DP_START_CH 0
 #define DP_END_CH 2
