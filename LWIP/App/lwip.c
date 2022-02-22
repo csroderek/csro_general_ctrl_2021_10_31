@@ -176,8 +176,8 @@ void MX_LWIP_Init(void)
   dhcp_start(&gnetif);
 
   /* USER CODE BEGIN 3 */
-  sys_thread_new("tcp_thread_01", tcp_thread_01, NULL, 512, 4);
-  sys_thread_new("tcp_thread_02", tcp_thread_02, NULL, 512, 4);
+  // sys_thread_new("tcp_thread_01", tcp_thread_01, NULL, 512, 4);
+  // sys_thread_new("tcp_thread_02", tcp_thread_02, NULL, 512, 4);
   /* USER CODE END 3 */
 }
 

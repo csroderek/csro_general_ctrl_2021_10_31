@@ -79,8 +79,8 @@ all: main-build
 main-build: csro_general_ctrl_2021_10_31.elf secondary-outputs
 
 # Tool invocations
-csro_general_ctrl_2021_10_31.elf: $(OBJS) $(USER_OBJS) C:\Users\Litao\STM32CubeIDE\workspace_1.8.0\csro_general_ctrl_2021_10_31\STM32F407VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "csro_general_ctrl_2021_10_31.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Litao\STM32CubeIDE\workspace_1.8.0\csro_general_ctrl_2021_10_31\STM32F407VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="csro_general_ctrl_2021_10_31.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+csro_general_ctrl_2021_10_31.elf: $(OBJS) $(USER_OBJS) C:\Users\Derek\STM32CubeIDE\workspace_1.7.0\csro_general_ctrl_2021_10_31\STM32F407VETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "csro_general_ctrl_2021_10_31.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Derek\STM32CubeIDE\workspace_1.7.0\csro_general_ctrl_2021_10_31\STM32F407VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="csro_general_ctrl_2021_10_31.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
