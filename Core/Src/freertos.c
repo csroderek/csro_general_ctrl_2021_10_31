@@ -297,7 +297,8 @@ void StartTask05(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    osDelay(100);
+    osDelay(500);
+    fnd_com_modbus_rtu_master2_read_write();
   }
   /* USER CODE END StartTask05 */
 }
