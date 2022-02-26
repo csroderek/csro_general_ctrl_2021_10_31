@@ -28,12 +28,12 @@ void fnd_input_update(void)
     fnd_input_adc_read_values(adc_values);
     for (uint8_t i = 0; i < (DP_END_CH - DP_START_CH + 1); i++)
     {
-        sys_regs.inputs[INPUT_DP_START + i] = adc_values[DP_START_CH + i];
+        sys_regs.inputs[INPUT_DP_START + i] = adc_values[DP_START_CH + i] / 4095.0 * 3300;
     }
     for (uint8_t i = 0; i < (NTC_END_CH - NTC_START_CH + 1); i++)
     {
         float ntc_resister_value = (float)10.0 * adc_values[NTC_START_CH + i] / (4095.1 - adc_values[NTC_START_CH + i]);
-        sys_regs.inputs[INPUT_NTC_START + i] = calculate_ntc_temperature(ntc_resister_value, 10.0, 3950);
+        sys_regs.inputs[INPUT_NTC_START + i] = calculate_ntc_temperature(ntc_resister_value, 5.0, 3470);
     }
     for (uint8_t i = 0; i < (VAL_FB_END_CH - VAL_FB_START_CH + 1); i++)
     {
