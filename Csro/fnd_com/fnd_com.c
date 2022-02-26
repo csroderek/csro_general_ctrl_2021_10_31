@@ -82,4 +82,7 @@ void fnd_com_modbus_rtu_master1_read_write(void)
 
     osDelay(50);
     master_read_holding_regs(&master[0], 20, 4, &sys_regs.inputs[60]);
+
+    osDelay(50);
+    master_read_holding_regs(&master[0], 30, 4, &sys_regs.inputs[70]);
 }
