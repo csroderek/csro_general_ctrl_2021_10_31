@@ -141,3 +141,4 @@
 "./Middlewares/Third_Party/LwIP/system/OS/sys_arch.o"
 "./Modbus_RTU/mb_master.o"
 "./Modbus_RTU/mb_slave.o"
+"./Simulink_Model/code/csro_ctrl_ert_rtw/csro_ctrl.o"

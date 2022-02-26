@@ -31,6 +31,7 @@
 #include "fnd_output.h"
 #include "fnd_com.h"
 #include "fnd_eeprom.h"
+#include "csro_ctrl.h"
 
 /* USER CODE END Includes */
 
@@ -339,6 +340,7 @@ void StartTask07(void *argument)
   {
     osDelay(100);
     fnd_input_update();
+    csro_ctrl_step();
     fnd_output_update();
   }
   /* USER CODE END StartTask07 */

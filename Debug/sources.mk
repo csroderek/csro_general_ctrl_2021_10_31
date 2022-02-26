@@ -42,4 +42,5 @@ Middlewares/Third_Party/LwIP/src/netif \
 Middlewares/Third_Party/LwIP/src/netif/ppp \
 Middlewares/Third_Party/LwIP/system/OS \
 Modbus_RTU \
+Simulink_Model/code/csro_ctrl_ert_rtw \
 
