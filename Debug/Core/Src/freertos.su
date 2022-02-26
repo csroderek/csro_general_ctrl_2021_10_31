@@ -3,8 +3,8 @@ freertos.c:219:6:StartTask01	16	static
 freertos.c:239:6:StartTask02	16	static
 freertos.c:257:6:StartTask03	16	static
 freertos.c:275:6:StartTask04	16	static
-freertos.c:293:6:StartTask05	16	static
-freertos.c:311:6:StartTask06	16	static
-freertos.c:330:6:StartTask07	16	static
-freertos.c:352:6:StartTask08	16	static
-freertos.c:372:6:StartTask09	16	static
+freertos.c:294:6:StartTask05	16	static
+freertos.c:312:6:StartTask06	16	static
+freertos.c:331:6:StartTask07	16	static
+freertos.c:353:6:StartTask08	16	static
+freertos.c:373:6:StartTask09	16	static

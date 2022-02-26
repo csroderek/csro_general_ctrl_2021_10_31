@@ -219,7 +219,7 @@ void MX_FREERTOS_Init(void)
 void StartTask01(void *argument)
 {
   /* init code for LWIP */
-  MX_LWIP_Init();
+  // MX_LWIP_Init();
   /* USER CODE BEGIN StartTask01 */
   /* Infinite loop */
   for (;;)
@@ -278,7 +278,8 @@ void StartTask04(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    fnd_com_modbus_rtu_slave3_wait();
+    osDelay(500);
+    fnd_com_modbus_rtu_master1_read_write();
   }
   /* USER CODE END StartTask04 */
 }
@@ -296,7 +297,7 @@ void StartTask05(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    fnd_com_modbus_rtu_slave4_wait();
+    osDelay(100);
   }
   /* USER CODE END StartTask05 */
 }
