@@ -127,6 +127,10 @@ const osThreadAttr_t myTask09_attributes = {
     .stack_size = 128 * 4,
     .priority = (osPriority_t)osPriorityLow,
 };
+/* Definitions for Stepper_Mutex */
+osMutexId_t Stepper_MutexHandle;
+const osMutexAttr_t Stepper_Mutex_attributes = {
+    .name = "Stepper_Mutex"};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -156,6 +160,9 @@ void MX_FREERTOS_Init(void)
   /* USER CODE BEGIN Init */
   fnd_com_modbus_rtu_init();
   /* USER CODE END Init */
+  /* Create the mutex(es) */
+  /* creation of Stepper_Mutex */
+  Stepper_MutexHandle = osMutexNew(&Stepper_Mutex_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */

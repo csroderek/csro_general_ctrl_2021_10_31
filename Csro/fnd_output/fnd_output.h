@@ -2,6 +2,7 @@
 #define FND_OUTPUT_H_
 
 #include "stm32f4xx_hal.h"
+#include "cmsis_os2.h"
 
 typedef enum
 {
@@ -28,6 +29,8 @@ typedef struct
     uint16_t phase;
 
 } stepper_motor;
+
+extern osMutexId_t Stepper_MutexHandle;
 
 void fnd_output_init(void);
 void fnd_output_update(void);

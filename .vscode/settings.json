@@ -2,6 +2,8 @@
   "files.associations": {
     "fnd_output.h": "c",
     "cmath": "c",
-    "main.h": "c"
+    "main.h": "c",
+    "freertos.h": "c",
+    "cmsis_os.h": "c"
   }
 }
